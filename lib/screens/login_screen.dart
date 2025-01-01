@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fuilio_app/screens/home_screen.dart';
 import 'package:fuilio_app/screens/signup_screen.dart';
+import 'package:fuilio_app/services/auth_service.dart';
 import 'package:fuilio_app/widgets/button.dart';
 import 'package:fuilio_app/widgets/text_field.dart';
 
@@ -14,6 +17,54 @@ class _SignUpScreenState extends State<LoginSignup> {
   //for controllers
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
+  void logInUser() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      // Call the Login method from AuthService
+      await AuthServices().logIn(
+        email: emailController.text,
+        password: passwordController.text,
+        context: context,
+      );
+
+      // If the LogIn was successful, navigate to the WelcomeScreen
+      setState(() {
+        isLoading = false;
+      });
+
+      Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
+    } catch (e) {
+      // If there was an error during signup, show error and stop loading
+      setState(() {
+        isLoading = false;
+      });
+
+      Fluttertoast.showToast(
+        msg: "LogIn failed. Please try again.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +76,20 @@ class _SignUpScreenState extends State<LoginSignup> {
         child: Column(
           children: [
             SizedBox(
-              width: double.infinity,
               height: height / 2.7,
-              child: Image.asset(""),
+              child: Image.asset('images/login.jpg'),
             ),
             TextFieldInputs(
-                textEditingController: emailController,
-                hintText: "Enter Your Email",
-                icon: Icons.email),
+              icon: Icons.person,
+              textEditingController: emailController,
+              hintText: 'Enter your email',
+            ),
             TextFieldInputs(
-                textEditingController: passwordController,
-                hintText: "Enter Your Password",
-                icon: Icons.lock),
+              icon: Icons.lock,
+              textEditingController: passwordController,
+              hintText: 'Enter your passord',
+              isPass: true,
+            ),
             const Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 35,
@@ -53,7 +106,7 @@ class _SignUpScreenState extends State<LoginSignup> {
                 ),
               ),
             ),
-            ComButton(onTap: () {}, text: "Log In"),
+            ComButton(onTap: logInUser, text: "Log In"),
             SizedBox(height: height / 15),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               const Text(
