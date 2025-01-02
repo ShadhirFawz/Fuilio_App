@@ -19,38 +19,63 @@ class AuthServices {
     required String phone,
     required BuildContext context,
   }) async {
+    // Check for empty fields
     if (email.isEmpty ||
         password.isEmpty ||
         name.isEmpty ||
         city.isEmpty ||
         phone.isEmpty) {
-      Fluttertoast.showToast(
-        msg: "Please fill in all fields.",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black54,
-        textColor: Colors.white,
-        fontSize: 16.0,
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please fill in all fields."),
+          backgroundColor: Colors.black54,
+        ),
       );
-      return;
+      return; // Stop further execution
     }
 
-    String phonePattern = r'^[0-9]{10}$';
-    RegExp regExp = RegExp(phonePattern);
+    // Validate email format
+    String emailPattern = r'^[^@]+@[^@]+\.[^@]+$';
+    RegExp emailRegExp = RegExp(emailPattern);
 
-    if (!regExp.hasMatch(phone)) {
-      Fluttertoast.showToast(
-        msg: "Invalid phone number. Please enter a 10-digit phone number.",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black54,
-        textColor: Colors.white,
-        fontSize: 16.0,
+    if (!emailRegExp.hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Invalid email address. Please enter a valid email."),
+          backgroundColor: Colors.black54,
+        ),
       );
-      return;
+      return; // Stop further execution
+    }
+
+    // Validate password (minimum 6 characters)
+    if (password.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Password must be at least 6 characters long."),
+          backgroundColor: Colors.black54,
+        ),
+      );
+      return; // Stop further execution
+    }
+
+    // Validate phone number (exactly 10 digits)
+    String phonePattern = r'^[0-9]{10}$';
+    RegExp phoneRegExp = RegExp(phonePattern);
+
+    if (!phoneRegExp.hasMatch(phone)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "Invalid phone number. Please enter a 10-digit phone number."),
+          backgroundColor: Colors.black54,
+        ),
+      );
+      return; // Stop further execution
     }
 
     try {
+      // Register the user using Firebase Authentication
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -60,6 +85,7 @@ class AuthServices {
       User? user = userCredential.user;
 
       if (user != null) {
+        // Save user information in Firestore
         await _firestore.collection('users').doc(user.uid).set({
           'name': name,
           'email': email,
@@ -68,6 +94,7 @@ class AuthServices {
           'userId': user.uid,
         });
 
+        // Display a success toast
         Fluttertoast.showToast(
           msg: "Sign-up successful!",
           toastLength: Toast.LENGTH_LONG,
@@ -77,29 +104,21 @@ class AuthServices {
           fontSize: 16.0,
         );
 
+        // Navigate to the LoginSignup screen
         Navigator.pushReplacement(
           // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(builder: (context) => const LoginSignup()),
         );
       }
-    } on FirebaseAuthException catch (e) {
-      String message;
-      if (e.code == 'weak-password') {
-        message = 'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
-        message = 'An account already exists with that email.';
-      } else {
-        message = "Something went wrong. Please try again.";
-      }
-
-      Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
+    } catch (e) {
+      // General error handling
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("An unexpected error occurred. Please try again."),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
