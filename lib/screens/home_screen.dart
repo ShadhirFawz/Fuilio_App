@@ -104,8 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: FutureBuilder<String?>(
                 future: _authServices.getUserName(),
-                builder: (context, snapshot) {
-                  final userName = snapshot.data ?? 'User';
+                builder: (context, results) {
+                  final userName = results.data ?? 'User';
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -199,17 +199,17 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: FutureBuilder<List<Vehicle>>(
                   future: _vehiclesFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+                  builder: (context, results) {
+                    if (results.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
+                    } else if (results.hasError) {
                       return Center(
                         child: Text(
-                          'Error: ${snapshot.error}',
+                          'Error: ${results.error}',
                           style: const TextStyle(color: Colors.white),
                         ),
                       );
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    } else if (!results.hasData || results.data!.isEmpty) {
                       return const Center(
                         child: Text(
                           'No vehicles added yet.',
@@ -218,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }
 
-                    final vehicles = snapshot.data!;
+                    final vehicles = results.data!;
                     return ListView.builder(
                       itemCount: vehicles.length,
                       itemBuilder: (context, index) {

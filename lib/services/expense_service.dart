@@ -32,7 +32,7 @@ class ExpenseService {
   // Retrieve all expenses for the given vehicle
   Future<List<Expense>> getExpenses() async {
     try {
-      final snapshot = await _firestore
+      final results = await _firestore
           .collection('users')
           .doc(userId)
           .collection('vehicles')
@@ -41,7 +41,7 @@ class ExpenseService {
           .orderBy('date', descending: true)
           .get();
 
-      return snapshot.docs.map((doc) => Expense.fromMap(doc.data())).toList();
+      return results.docs.map((doc) => Expense.fromMap(doc.data())).toList();
     } catch (e) {
       logger.e("Error retrieving expenses: $e");
       return [];

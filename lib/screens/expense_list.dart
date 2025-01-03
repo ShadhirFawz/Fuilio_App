@@ -50,52 +50,78 @@ class _ExpenseListState extends State<ExpenseList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Expense Records',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(51, 48, 91, 1), // Light Blue
+              Color.fromARGB(255, 26, 76, 214), // Soft Blue
+            ],
+          ),
+        ),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Expense Records',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white, // Updated text color for contrast
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: FutureBuilder<List<Expense>>(
-              future: _expensesFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+            Expanded(
+              child: FutureBuilder<List<Expense>>(
+                future: _expensesFuture,
+                builder: (context, results) {
+                  if (results.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
+                  if (results.hasError) {
+                    return const Center(
+                        child: Text(
+                      'Error fetching expenses.',
+                      style: TextStyle(color: Colors.white),
+                    ));
+                  }
 
-                if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No expense records.'));
-                }
+                  if (!results.hasData || results.data!.isEmpty) {
+                    return const Center(
+                        child: Text(
+                      'No expense records.',
+                      style: TextStyle(color: Colors.white),
+                    ));
+                  }
 
-                final expenses = snapshot.data!;
-                return ListView.builder(
-                  itemCount: expenses.length,
-                  itemBuilder: (context, index) {
-                    final expense = expenses[index];
-                    return ListTile(
-                      title: Text(expense.type),
-                      subtitle: Text('Amount: ${expense.amount}'),
-                      trailing: Text(
-                        expense.date.toLocal().toString().split(' ')[0],
-                      ),
-                    );
-                  },
-                );
-              },
+                  final expenses = results.data!;
+                  return ListView.builder(
+                    itemCount: expenses.length,
+                    itemBuilder: (context, index) {
+                      final expense = expenses[index];
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
+                        elevation: 4,
+                        child: ListTile(
+                          title: Text(expense.type),
+                          subtitle: Text('Amount: \$${expense.amount}'),
+                          trailing: Text(
+                            expense.date.toLocal().toString().split(' ')[0],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToAddExpense,

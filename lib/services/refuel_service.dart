@@ -22,17 +22,17 @@ class RefuelService {
 
   Future<List<Refuel>> getRefuels(String vehicleId) async {
     try {
-      final snapshot = await _firestore
+      final results = await _firestore
           .collection('users')
           .doc(userId)
           .collection('vehicles')
           .doc(vehicleId)
           .collection('refuels')
-          .orderBy('date',
+          .orderBy('dateTime',
               descending: true) // DateTime sort in descending order
           .get();
 
-      return snapshot.docs.map((doc) => Refuel.fromMap(doc.data())).toList();
+      return results.docs.map((doc) => Refuel.fromMap(doc.data())).toList();
     } catch (e) {
       logger.e('Error fetching refuels: $e');
       return [];
@@ -41,22 +41,27 @@ class RefuelService {
 
   Future<double> calculateAverageFuelEconomy(String vehicleId) async {
     try {
+      // Fetch refuels sorted by dateTime descending
       final refuels = await getRefuels(vehicleId);
 
+      // Ensure there are at least two refuels for comparison
       if (refuels.length < 2) return 0.0;
 
-      // Sort by date and time in descending order
+      // Sort to ensure correct order (most recent first)
       refuels.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
-      double totalFuel = 0.0;
-      double totalMileage = 0.0;
+      // Take the two most recent refuels
+      final recentRefuel = refuels[0];
+      final previousRefuel = refuels[1];
 
-      for (int i = 1; i < refuels.length; i++) {
-        totalFuel += refuels[i].fuelAdded;
-        totalMileage += refuels[i].mileage - refuels[i - 1].mileage;
-      }
+      // Calculate distance traveled between the two refuels
+      double distanceTravelled = recentRefuel.mileage - previousRefuel.mileage;
 
-      return totalFuel == 0 ? 0.0 : totalMileage / totalFuel;
+      // Fuel added in the most recent refuel
+      double fuelAdded = recentRefuel.fuelAdded;
+
+      // Calculate km/L: Distance ÷ Fuel
+      return fuelAdded == 0 ? 0.0 : distanceTravelled / fuelAdded;
     } catch (e) {
       logger.e('Error calculating fuel economy: $e');
       return 0.0;

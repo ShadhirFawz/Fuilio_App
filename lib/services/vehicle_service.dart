@@ -18,9 +18,9 @@ class VehicleService {
   Future<List<Vehicle>> getVehicles() async {
     final vehicleCollection =
         _firestore.collection('users').doc(userId).collection('vehicles');
-    final snapshot = await vehicleCollection.get();
+    final results = await vehicleCollection.get();
 
-    return snapshot.docs.map((doc) => Vehicle.fromJson(doc.data())).toList();
+    return results.docs.map((doc) => Vehicle.fromJson(doc.data())).toList();
   }
 
   // Fetch a specific vehicle by ID
@@ -30,10 +30,10 @@ class VehicleService {
         .doc(userId)
         .collection('vehicles')
         .doc(vehicleId);
-    final snapshot = await vehicleDoc.get();
+    final results = await vehicleDoc.get();
 
-    if (snapshot.exists) {
-      return Vehicle.fromJson(snapshot.data()!);
+    if (results.exists) {
+      return Vehicle.fromJson(results.data()!);
     }
     return null;
   }
