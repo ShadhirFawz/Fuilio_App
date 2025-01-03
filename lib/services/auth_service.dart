@@ -142,7 +142,11 @@ class AuthServices {
     }
 
     try {
+      // Authenticate the user
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      // Fetch the current user ID
+      String userId = getCurrentUserId();
 
       Fluttertoast.showToast(
         msg: "Login successful!",
@@ -153,10 +157,13 @@ class AuthServices {
         fontSize: 16.0,
       );
 
+      // Navigate to HomeScreen with the userId
       Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(userId: userId),
+        ),
       );
     } on FirebaseAuthException catch (e) {
       String message;
@@ -215,11 +222,26 @@ class AuthServices {
       if (user != null) {
         DocumentSnapshot userDoc =
             await _firestore.collection('users').doc(user.uid).get();
-        return userDoc['name'];
+
+        // Check if the document exists and has the "name" field
+        if (userDoc.exists && userDoc.data() != null) {
+          final data = userDoc.data() as Map<String, dynamic>;
+          return data['name'] ?? 'No Name Found';
+        } else {
+          log("Document for user does not exist or has no name field.");
+        }
+      } else {
+        log("No logged-in user.");
       }
     } catch (e) {
       log("Error fetching user name: ${e.toString()}");
     }
     return null;
+  }
+
+  // Get the current user's ID
+  String getCurrentUserId() {
+    final user = FirebaseAuth.instance.currentUser;
+    return user?.uid ?? '';
   }
 }

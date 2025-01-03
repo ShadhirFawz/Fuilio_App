@@ -63,11 +63,11 @@ class _SplashScreenState extends State<SplashScreen> {
       _logger.d('hasSeenOnboarding: $hasSeenOnboarding');
       _logger.d('currentUser: $currentUser');
 
-      // Determine navigation based on user's state
       Widget nextScreen;
       if (currentUser != null) {
-        // User is logged in
-        nextScreen = const HomeScreen(); // Replace with your home screen
+        // User is logged in, fetch userId
+        final userId = currentUser.uid;
+        nextScreen = HomeScreen(userId: userId);
       } else if (!hasSeenOnboarding) {
         // Show onboarding for first-time users
         nextScreen = const Onboarding();
@@ -76,7 +76,6 @@ class _SplashScreenState extends State<SplashScreen> {
         nextScreen = const LoginSignup();
       }
 
-      // Navigate to the determined screen
       if (mounted) {
         Navigator.pushReplacement(
           context,
@@ -84,7 +83,6 @@ class _SplashScreenState extends State<SplashScreen> {
         );
       }
     } catch (e) {
-      // Handle potential errors (e.g., Firebase or SharedPreferences failures)
       _logger.e('Error determining initial route: $e');
     }
   }

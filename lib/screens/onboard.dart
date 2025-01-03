@@ -24,6 +24,7 @@ class _OnboardingState extends State<Onboarding> {
     _logger.d('hasSeenOnboarding set to true');
 
     Navigator.pushReplacement(
+      // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(builder: (context) => const LoginSignup()),
     );

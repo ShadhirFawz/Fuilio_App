@@ -19,38 +19,35 @@ class _SignUpScreenState extends State<LoginSignup> {
   final TextEditingController passwordController = TextEditingController();
   bool isLoading = false;
 
-  @override
-  void dispose() {
-    super.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-  }
-
   void logInUser() async {
     setState(() {
       isLoading = true;
     });
 
     try {
-      // Call the Login method from AuthService
+      // Log in the user
       await AuthServices().logIn(
         email: emailController.text,
         password: passwordController.text,
         context: context,
       );
 
-      // If the LogIn was successful, navigate to the WelcomeScreen
+      // Get the logged-in user's ID
+      final userId = AuthServices().getCurrentUserId();
+
       setState(() {
         isLoading = false;
       });
 
+      // Navigate to the HomeScreen and pass the userId
       Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(userId: userId),
+        ),
       );
     } catch (e) {
-      // If there was an error during signup, show error and stop loading
       setState(() {
         isLoading = false;
       });
