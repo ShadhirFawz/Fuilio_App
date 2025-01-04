@@ -66,68 +66,114 @@ class _SignUpScreenState extends State<LoginSignup> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-          child: SizedBox(
-        child: Column(
-          children: [
-            SizedBox(
-              height: height / 2.7,
-              child: Image.asset('images/login.jpg'),
+      extendBodyBehindAppBar: true, // Allow body to extend behind app bar
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // Transparent background
+        elevation: 0, // Remove shadow for a cleaner look
+        iconTheme:
+            const IconThemeData(color: Colors.white), // Back icon color white
+      ),
+      body: Stack(
+        children: [
+          // Background Image (covers the entire screen including app bar area)
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/onboard_placeholder.png', // Your background image path
+              fit: BoxFit.cover, // Cover the whole screen
             ),
-            TextFieldInputs(
-              icon: Icons.person,
-              textEditingController: emailController,
-              hintText: 'Enter your email',
-            ),
-            TextFieldInputs(
-              icon: Icons.lock,
-              textEditingController: passwordController,
-              hintText: 'Enter your passord',
-              isPass: true,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 35,
-              ),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  "Forget Password?",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.blue,
+          ),
+          // Content Overlay
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                    height: 70), // To push the content below the AppBar
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+                  child: Image.asset(
+                    'assets/icons/LogoFill.png', // Keep your LogoFill here
+                    height: 150,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ),
-            ),
-            ComButton(onTap: logInUser, text: "Log In"),
-            SizedBox(height: height / 15),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const Text(
-                "Don't have an Account!",
-                style: TextStyle(fontSize: 16),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SignUpScreen(),
+                const SizedBox(height: 10),
+                ShaderMask(
+                  shaderCallback: (Rect bounds) {
+                    return const LinearGradient(
+                      colors: [Color(0xFF5B57CC), Color(0xFFDA5037)],
+                      stops: [0.0, 0.63],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ).createShader(bounds);
+                  },
+                  child: const Text(
+                    'Fuilio',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Rufina',
+                      color: Colors.white,
                     ),
-                  );
-                },
-                child: const Text(
-                  "  Signup",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                 ),
-              )
-            ])
-          ],
-        ),
-      )),
+                const SizedBox(height: 70),
+                TextFieldInputs(
+                  icon: Icons.person,
+                  textEditingController: emailController,
+                  hintText: 'Enter your email',
+                ),
+                TextFieldInputs(
+                  icon: Icons.lock,
+                  textEditingController: passwordController,
+                  hintText: 'Enter your password',
+                  isPass: true,
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 35),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      "Forget Password?",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ),
+                ComButton(onTap: logInUser, text: "Log In"),
+                SizedBox(height: height / 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Don't have an Account!",
+                        style: TextStyle(fontSize: 16)),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignUpScreen()),
+                        );
+                      },
+                      child: const Text(
+                        " Signup",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.deepPurple),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

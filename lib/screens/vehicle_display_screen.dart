@@ -32,8 +32,8 @@ class VehicleDisplayScreen extends StatelessWidget {
           ),
           bottom: const TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.monetization_on), text: 'Expenses'),
               Tab(icon: Icon(Icons.local_gas_station), text: 'Refuels'),
+              Tab(icon: Icon(Icons.monetization_on), text: 'Expenses'),
             ],
           ),
         ),
@@ -50,14 +50,15 @@ class VehicleDisplayScreen extends StatelessWidget {
           ),
           child: TabBarView(
             children: [
+              RefuelList(
+                vehicleId: vehicleId,
+                userId: userId,
+              ),
               ExpenseList(
                 vehicleId: vehicleId,
                 userId: userId,
               ),
-              RefuelList(
-                vehicleId: vehicleId,
-                userId: userId,
-              ), // Pass userId here
+              // Pass userId here
             ],
           ),
         ),

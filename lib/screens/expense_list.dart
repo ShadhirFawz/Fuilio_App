@@ -1,64 +1,49 @@
 import 'package:flutter/material.dart';
-import '../services/expense_service.dart';
 import '../models/expense_model.dart';
-import 'add_expense_screen.dart';
+import '../services/expense_service.dart';
+import '../widgets/expense_stats.dart';
+import 'expense_stats_display.dart';
 
 class ExpenseList extends StatefulWidget {
-  final String vehicleId;
   final String userId;
+  final String vehicleId;
 
-  const ExpenseList({
-    required this.vehicleId,
-    required this.userId,
-    super.key,
-  });
+  const ExpenseList({required this.userId, required this.vehicleId, super.key});
 
   @override
-  State<ExpenseList> createState() => _ExpenseListState();
+  // ignore: library_private_types_in_public_api
+  _ExpenseListScreenState createState() => _ExpenseListScreenState();
 }
 
-class _ExpenseListState extends State<ExpenseList> {
-  late ExpenseService _expenseService;
+class _ExpenseListScreenState extends State<ExpenseList> {
   late Future<List<Expense>> _expensesFuture;
 
   @override
   void initState() {
     super.initState();
-    _expenseService = ExpenseService(
+    _expensesFuture = ExpenseService(
       userId: widget.userId,
       vehicleId: widget.vehicleId,
-    );
-    _expensesFuture = _expenseService.getExpenses();
-  }
-
-  void _navigateToAddExpense() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddExpenseScreen(
-          userId: widget.userId,
-          vehicleId: widget.vehicleId,
-        ),
-      ),
-    );
-    // Reload the expense list after returning from the AddExpenseScreen
-    setState(() {
-      _expensesFuture = _expenseService.getExpenses();
-    });
+    ).getExpenses();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Expense Records'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
             colors: [
-              Color.fromRGBO(51, 48, 91, 1), // Light Blue
-              Color.fromARGB(255, 26, 76, 214), // Soft Blue
+              Color.fromRGBO(51, 48, 91, 1),
+              Color.fromARGB(255, 26, 76, 214),
             ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
         child: Column(
@@ -70,63 +55,66 @@ class _ExpenseListState extends State<ExpenseList> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white, // Updated text color for contrast
+                  color: Colors.white,
                 ),
               ),
             ),
             Expanded(
               child: FutureBuilder<List<Expense>>(
                 future: _expensesFuture,
-                builder: (context, results) {
-                  if (results.connectionState == ConnectionState.waiting) {
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (results.hasError) {
+                  if (snapshot.hasError) {
                     return const Center(
-                        child: Text(
-                      'Error fetching expenses.',
-                      style: TextStyle(color: Colors.white),
-                    ));
+                        child: Text('Error fetching expenses.',
+                            style: TextStyle(color: Colors.white)));
                   }
 
-                  if (!results.hasData || results.data!.isEmpty) {
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(
-                        child: Text(
-                      'No expense records.',
-                      style: TextStyle(color: Colors.white),
-                    ));
+                        child: Text('No expense records.',
+                            style: TextStyle(color: Colors.white)));
                   }
 
-                  final expenses = results.data!;
-                  return ListView.builder(
-                    itemCount: expenses.length,
-                    itemBuilder: (context, index) {
-                      final expense = expenses[index];
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 16.0),
-                        elevation: 4,
-                        child: ListTile(
-                          title: Text(expense.type),
-                          subtitle: Text('Amount: \$${expense.amount}'),
-                          trailing: Text(
-                            expense.date.toLocal().toString().split(' ')[0],
-                          ),
+                  final expenses = snapshot.data!;
+                  final stats = ExpenseStats(expenses);
+
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ExpenseStatsDisplay(stats: stats),
+                        // You can add the list of individual expenses below
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: expenses.length,
+                          itemBuilder: (context, index) {
+                            final expense = expenses[index];
+                            return Card(
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16.0),
+                              elevation: 4,
+                              child: ListTile(
+                                title: Text(expense.type),
+                                subtitle: Text('Amount: Rs ${expense.amount}'),
+                                trailing: Text(expense.date
+                                    .toLocal()
+                                    .toString()
+                                    .split(' ')[0]),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ],
+                    ),
                   );
                 },
               ),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _navigateToAddExpense,
-        tooltip: 'Add Expense',
-        child: const Icon(Icons.add),
       ),
     );
   }

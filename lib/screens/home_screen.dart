@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuilio_app/screens/edit_profile_screen.dart';
 import 'package:fuilio_app/screens/login_screen.dart';
 import '../models/vehicle_model.dart';
 import '../services/auth_service.dart';
@@ -54,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const LoginSignup(),
+        builder: (context) => const EditProfileScreen(),
       ),
     );
   }
@@ -89,83 +90,96 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
       ),
       drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFFE0E0E0),
-                    Color(0xFFB0BEC5),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFFE0E0E0),
+                Color.fromARGB(255, 143, 154, 160),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: ListView(
+            children: [
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFFE0E0E0),
+                      Color(0xFFB0BEC5),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
-              ),
-              child: FutureBuilder<String?>(
-                future: _authServices.getUserName(),
-                builder: (context, results) {
-                  final userName = results.data ?? 'User';
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey.shade300,
-                        ),
-                        child: const Icon(
-                          Icons.person,
-                          size: 50,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return const LinearGradient(
-                            colors: [Color(0xFF5B57CC), Color(0xFFDA5037)],
-                            stops: [0.0, 0.63],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ).createShader(bounds);
-                        },
-                        child: Text(
-                          userName,
-                          style: const TextStyle(
-                            fontFamily: 'Rufina',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
-                            color: Colors.white,
+                child: FutureBuilder<String?>(
+                  future: _authServices.getUserName(),
+                  builder: (context, results) {
+                    final userName = results.data ?? 'User';
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color.fromARGB(255, 188, 99, 99),
+                          ),
+                          child: const Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.black,
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 10),
+                        ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return const LinearGradient(
+                              colors: [Color(0xFF5B57CC), Color(0xFFDA5037)],
+                              stops: [0.0, 0.63],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ).createShader(bounds);
+                          },
+                          child: Text(
+                            userName,
+                            style: const TextStyle(
+                              fontFamily: 'Rufina',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: const Text('Edit Profile'),
+                onTap: _navigateToEditProfile,
+              ),
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('Logout'),
+                onTap: () async {
+                  await _authServices.logOut(context: context);
+                  Navigator.pushReplacement(
+                    // ignore: use_build_context_synchronously
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginSignup()),
                   );
                 },
               ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text('Edit Profile'),
-              onTap: _navigateToEditProfile,
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
-              onTap: () async {
-                await _authServices.logOut(context: context);
-                Navigator.pushReplacement(
-                  // ignore: use_build_context_synchronously
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginSignup()),
-                );
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       body: Container(
@@ -231,37 +245,49 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Stack(
                             children: [
                               ListTile(
-                                title: Text(
-                                  vehicle.name,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24,
-                                      fontFamily: 'Rufina'),
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .start, // Centers the contents horizontally
                                   children: [
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      'Model: ${vehicle.model}',
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontFamily: 'Mulish',
-                                          fontWeight: FontWeight.bold),
+                                    const Icon(
+                                      Icons.directions_car, // Car icon
+                                      color: Color.fromARGB(255, 175, 67,
+                                          17), // Adjust the color to fit your design
+                                      size: 40, // Adjust the icon size
                                     ),
                                     const SizedBox(
-                                      height: 3,
+                                        width:
+                                            20), // Space between icon and text
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          vehicle.name,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 24,
+                                              fontFamily: 'Rufina'),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          'Model: ${vehicle.model}',
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              fontFamily: 'Mulish',
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(height: 3),
+                                        Text(
+                                          'Year: ${vehicle.manufactureYear}',
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              fontFamily: 'Noticia',
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(height: 7),
+                                      ],
                                     ),
-                                    Text(
-                                      'Year: ${vehicle.manufactureYear}',
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontFamily: 'Noticia',
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      height: 7,
-                                    )
                                   ],
                                 ),
                                 onTap: () {
@@ -293,13 +319,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               Positioned(
-                                right: 8,
+                                right: 16,
                                 bottom: 8,
                                 child: Text(
                                   ' ${vehicle.vehicleDate.toLocal().toString().split(' ')[0]}',
                                   style: const TextStyle(
                                     fontSize: 12,
-                                    color: Colors.black54,
+                                    color: Colors.black87,
                                   ),
                                 ),
                               ),

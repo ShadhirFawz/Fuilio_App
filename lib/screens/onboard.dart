@@ -48,29 +48,11 @@ class _OnboardingState extends State<Onboarding> {
                 logo: 'assets/icons/LogoFill.png',
                 banner: 'assets/images/onboard_placeholder.png',
                 mainImage: 'assets/images/img_onboard1.png',
-                title: 'MotoGo',
-                subtitle: 'Let you Master your vehicle from the Experts',
-                description: 'Did your vehicle condition\nfeels Good!',
-                footer: 'Remember The Last Time You Inspect\n Your Vehicle?',
+                title: 'FuiLio',
+                subtitle: 'We value your money, even if its your vehicle',
+                description: 'Do you really worried about\nyour savings!',
+                footer: 'Couldnt find a safe place to track\n  your expense',
                 pageIndex: 0,
-                totalPages: 3,
-                onNext: () {
-                  _pageController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                },
-              ),
-              // Onboarding Page 2
-              OnboardingPage(
-                logo: 'assets/icons/LogoFill.png',
-                banner: 'assets/images/onboard_placeholder.png',
-                mainImage: 'assets/images/img_onboard2.png',
-                title: 'MotoGo',
-                subtitle: 'Keep your vehicle in the best shape',
-                description: 'Track your vehicle health\non the go!',
-                footer: 'Don’t let the unexpected surprise you!',
-                pageIndex: 1,
                 totalPages: 3,
                 onNext: () {
                   _pageController.nextPage(
@@ -83,12 +65,11 @@ class _OnboardingState extends State<Onboarding> {
               OnboardingPage(
                 logo: 'assets/icons/LogoFill.png',
                 banner: 'assets/images/onboard_placeholder.png',
-                mainImage: 'assets/images/img_onboard3.png',
-                title: 'MotoGo',
-                subtitle: 'Choose the right fit for your budget',
-                description:
-                    'Be aware of your vehicle’s condition at any time!',
-                footer: 'Let’s make sure your ride stays smooth!',
+                mainImage: 'assets/images/img_onboard2.png',
+                title: 'FuiLio',
+                subtitle: 'We got your expense covered',
+                description: 'Trouble in having service records!',
+                footer: 'Didnt find a best place to store them?',
                 pageIndex: 2,
                 totalPages: 3,
                 onNext:
@@ -104,7 +85,7 @@ class _OnboardingState extends State<Onboarding> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
-                3, // Total number of onboarding screens
+                2, // Total number of onboarding screens
                 (index) => GestureDetector(
                   onTap: () {
                     _pageController.animateToPage(
@@ -195,7 +176,15 @@ class OnboardingPage extends StatelessWidget {
             children: [
               const SizedBox(height: 100),
               // Logo
-              Image.asset(logo, height: 80),
+              ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(10.0), // Curved border added
+                child: Image.asset(
+                  'assets/icons/LogoFill.png',
+                  height: 80,
+                  fit: BoxFit.cover, // Ensure proper scaling inside the border
+                ),
+              ),
               const SizedBox(height: 20),
               // Title
               ShaderMask(
@@ -255,7 +244,7 @@ class OnboardingPage extends StatelessWidget {
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Color.fromARGB(255, 0, 0, 0),
-                  fontFamily: 'NoticiaText',
+                  fontFamily: 'Times New Roman',
                 ),
                 textAlign: TextAlign.center,
               ),
