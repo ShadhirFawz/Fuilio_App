@@ -73,13 +73,11 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
 
   Future<void> _resetExpenses() async {
     try {
-      // Pass userId and vehicleId to the ExpenseService constructor
       await ExpenseService(userId: widget.userId, vehicleId: widget.vehicleId)
           .deleteAllExpenses();
       setState(() {
         stats = ExpenseStats([]); // Reset the stats to empty list
       });
-      // Display a confirmation SnackBar
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -87,7 +85,6 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
         ),
       );
     } catch (e) {
-      // Handle error gracefully (e.g., show a Snackbar or dialog)
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Error deleting expenses: $e'),
@@ -102,6 +99,27 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
         stats.totalBrakePads +
         stats.totalOther;
 
+    // Handle no expenses case
+    if (totalExpense == 0) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.info, size: 80, color: Colors.grey),
+            SizedBox(height: 20),
+            Text(
+              'No Expenses',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     final List<PieChartSectionData> sections = [
       _buildPieChartSection(
           'Tire Replacement', stats.totalTireReplacement, Colors.blue),
@@ -114,14 +132,12 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Pie Chart and Legend
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Pie Chart
                 SizedBox(
                   height: 180,
                   width: 180,
@@ -134,22 +150,13 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
                     ),
                   ),
                 ),
-
-                // Space between Pie Chart and Legend
                 const SizedBox(width: 25),
-
-                // Legend
                 _buildLegend(),
               ],
             ),
           ),
-
           const SizedBox(height: 10),
-
-          // Single Horizontal Bar Showing All Expenses Proportionally
           _buildTotalBar(totalExpense),
-
-          // Display Total Expense in a Filled Rectangle with Reset Button
           const SizedBox(height: 20),
           _buildTotalExpenseRectangle(totalExpense),
         ],
@@ -180,12 +187,15 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
     );
   }
 
-  /// Single Horizontal Bar with Padding and Overlapping Sections
   Widget _buildTotalBar(double totalExpense) {
-    final double tirePercentage = stats.totalTireReplacement / totalExpense;
-    final double oilPercentage = stats.totalOilChange / totalExpense;
-    final double brakePercentage = stats.totalBrakePads / totalExpense;
-    final double otherPercentage = stats.totalOther / totalExpense;
+    final double tirePercentage =
+        totalExpense > 0 ? stats.totalTireReplacement / totalExpense : 0;
+    final double oilPercentage =
+        totalExpense > 0 ? stats.totalOilChange / totalExpense : 0;
+    final double brakePercentage =
+        totalExpense > 0 ? stats.totalBrakePads / totalExpense : 0;
+    final double otherPercentage =
+        totalExpense > 0 ? stats.totalOther / totalExpense : 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,13 +213,10 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
           ),
         ),
         const SizedBox(height: 5),
-
-        // Horizontal Bar with Expense Proportions
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              // Horizontal Bar
               Container(
                 height: 12,
                 decoration: BoxDecoration(
@@ -225,8 +232,6 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
                 ),
               ),
               const SizedBox(height: 10),
-
-              // Expense Values Displayed Below the Bar
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -251,7 +256,6 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
     );
   }
 
-  /// Helper method to create each colored section within the bar
   Widget _buildBarSection(Color color, double percentage) {
     return Expanded(
       flex: (percentage * 100).round(),
@@ -264,7 +268,6 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
     );
   }
 
-  /// Helper widget to display each expense label with color
   Widget _buildExpenseLabel(String label, Color color) {
     return Row(
       children: [
@@ -282,45 +285,36 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
     );
   }
 
-  /// Display Total Expense inside a Filled Rectangle with Circular Corners
   Widget _buildTotalExpenseRectangle(double totalExpense) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // The label text placed outside the rectangle
           const Text(
             'Cost ',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               fontFamily: 'Noticia',
-              color:
-                  Color.fromARGB(255, 208, 157, 157), // Adjust color as needed
+              color: Color.fromARGB(255, 208, 157, 157),
             ),
           ),
-
-          // Rectangle containing the expense value
           Container(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 25),
             decoration: BoxDecoration(
-              color:
-                  const Color.fromARGB(131, 177, 168, 160), // Background color
+              color: const Color.fromARGB(131, 177, 168, 160),
               borderRadius: BorderRadius.circular(30),
             ),
             child: Row(
-              mainAxisSize: MainAxisSize
-                  .min, // Ensure the row only takes as much space as necessary
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(
-                  Icons
-                      .money, // You can use Icons.attach_money as well for a money symbol
+                  Icons.money,
                   color: Colors.white,
-                  size: 20, // Icon size
+                  size: 20,
                 ),
-                const SizedBox(
-                    width: 8), // Add some spacing between the icon and the text
+                const SizedBox(width: 8),
                 Text(
                   'Rs ${totalExpense.toStringAsFixed(2)}',
                   style: const TextStyle(
@@ -333,18 +327,14 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
               ],
             ),
           ),
-
-          // Delete Forever Button with Rectangle Background Added
           Container(
             decoration: BoxDecoration(
-              color: const Color.fromARGB(
-                  176, 244, 67, 54), // Red background for delete button
-              borderRadius:
-                  BorderRadius.circular(12), // Slightly rounded corners
+              color: const Color.fromARGB(176, 244, 67, 54),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: IconButton(
               icon: const Icon(Icons.delete_forever, color: Colors.white),
-              onPressed: _showResetConfirmationDialog, // Show the dialog
+              onPressed: _showResetConfirmationDialog,
               tooltip: 'Delete Forever',
             ),
           ),
