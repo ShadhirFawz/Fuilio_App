@@ -35,7 +35,7 @@ dependencies:
 
   fluttertoast: ^8.2.8
   uuid: ^3.0.7
-  fl_chart: ^0.40.0
+  fl_chart: ^0.64.0
   intl: ^0.17.0
   percent_indicator: ^4.0.0
   flutter_svg: ^2.0.0

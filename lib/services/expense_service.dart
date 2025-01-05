@@ -47,4 +47,37 @@ class ExpenseService {
       return [];
     }
   }
+
+  // Delete all expenses for the given vehicle
+  Future<void> deleteAllExpenses() async {
+    try {
+      final expensesQuery = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('vehicles')
+          .doc(vehicleId)
+          .collection('expenses')
+          .get();
+
+      // Check if there are any expenses
+      if (expensesQuery.docs.isEmpty) {
+        logger.i("No expenses to delete.");
+        return;
+      }
+
+      // Start a batch operation to delete all expenses
+      WriteBatch batch = _firestore.batch();
+
+      for (var doc in expensesQuery.docs) {
+        batch.delete(doc.reference);
+      }
+
+      // Commit the batch operation
+      await batch.commit();
+      logger.i("All expenses deleted successfully.");
+    } catch (e) {
+      logger.e("Error deleting expenses: $e");
+      rethrow;
+    }
+  }
 }
