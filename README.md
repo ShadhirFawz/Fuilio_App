@@ -52,6 +52,7 @@ cd flutter-firebase-project
 ```bash
 flutter pub get
 ```
+---
 
 #Firebase Configuration
 1. Create a Firebase project in the Firebase Console.
@@ -68,6 +69,7 @@ flutter pub get
 firebase login
 flutterfire configure
 ```
+---
 
 #Running the Project
 Run on Emulator or Physical Device
@@ -90,6 +92,9 @@ flutter build apk --release
 ```bash
 flutter build ios --release
 ```
+
+---
+
 ##Project Structure
 ```plaintext
 lib/
@@ -101,6 +106,9 @@ lib/
 ├── utils/                # Utility functions and constants
 └── main.dart             # App entry point
 ```
+
+---
+
 Available Commands
 Lint the Code
 ```bash
@@ -118,6 +126,8 @@ Clean Build Files
 ```bash
 flutter clean
 ```
+
+---
 #Contributing
 🚶 Contributions are welcome! To contribute:
 
