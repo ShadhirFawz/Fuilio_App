@@ -22,6 +22,7 @@ class _RefuelListState extends State<RefuelList> {
 
   double? _lastSavedAverageFuelEconomy;
   DateTime? _lastSavedDate;
+  bool isKmPerLitre = true; // This tracks the conversion state
 
   @override
   void initState() {
@@ -180,7 +181,6 @@ class _RefuelListState extends State<RefuelList> {
                   }
 
                   double averageFuelEconomy = results.data ?? 0.0;
-                  bool isKmPerLitre = true;
 
                   // Save the previous history only if the fuel economy has changed
                   if (_lastSavedAverageFuelEconomy != null &&
@@ -215,7 +215,7 @@ class _RefuelListState extends State<RefuelList> {
                                   lineWidth: 20.0,
                                   percent: percent,
                                   center: Text(
-                                    '${displayedValue.toStringAsFixed(2)}\n${isKmPerLitre ? "Km/L" : "MPG"}',
+                                    '${displayedValue.toStringAsFixed(2)}\n${isKmPerLitre ? "Km/L" : "M/G"}',
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       fontSize: 22,
@@ -269,7 +269,7 @@ class _RefuelListState extends State<RefuelList> {
                                   activeColor: Colors.green,
                                   inactiveThumbColor: Colors.blue,
                                 ),
-                                const Text('MPG',
+                                const Text('M/G',
                                     style: TextStyle(
                                         fontSize: 18, color: Colors.white)),
                               ],

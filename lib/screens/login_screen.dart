@@ -25,35 +25,36 @@ class _SignUpScreenState extends State<LoginSignup> {
     });
 
     try {
-      // Log in the user
-      await AuthServices().logIn(
+      // Log in the user and check success
+      bool isLoggedIn = await AuthServices().logIn(
         email: emailController.text,
         password: passwordController.text,
-        context: context,
       );
-
-      // Get the logged-in user's ID
-      final userId = AuthServices().getCurrentUserId();
 
       setState(() {
         isLoading = false;
       });
 
-      // Navigate to the HomeScreen and pass the userId
-      Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(userId: userId),
-        ),
-      );
+      if (isLoggedIn) {
+        // Get the logged-in user's ID and navigate to the HomeScreen
+        final userId = AuthServices().getCurrentUserId();
+
+        // Navigate to the HomeScreen and pass the userId
+        Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(userId: userId),
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
 
       Fluttertoast.showToast(
-        msg: "LogIn failed. Please try again.",
+        msg: "An unexpected error occurred. Please try again.",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,

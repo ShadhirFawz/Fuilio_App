@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:fuilio_app/screens/home_screen.dart';
 import 'package:fuilio_app/screens/login_screen.dart';
 
 class AuthServices {
@@ -124,10 +123,9 @@ class AuthServices {
   }
 
   // Sign in an existing user
-  Future<void> logIn({
+  Future<bool> logIn({
     required String email,
     required String password,
-    required BuildContext context,
   }) async {
     if (email.isEmpty || password.isEmpty) {
       Fluttertoast.showToast(
@@ -138,15 +136,12 @@ class AuthServices {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      return;
+      return false;
     }
 
     try {
       // Authenticate the user
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-
-      // Fetch the current user ID
-      String userId = getCurrentUserId();
 
       Fluttertoast.showToast(
         msg: "Login successful!",
@@ -156,15 +151,7 @@ class AuthServices {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-
-      // Navigate to HomeScreen with the userId
-      Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(userId: userId),
-        ),
-      );
+      return true; // Login successful
     } on FirebaseAuthException catch (e) {
       String message;
       if (e.code == 'user-not-found') {
@@ -183,8 +170,10 @@ class AuthServices {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+      return false; // Login failed
     } catch (e) {
       log("Error during signin: ${e.toString()}");
+      return false; // Login failed
     }
   }
 

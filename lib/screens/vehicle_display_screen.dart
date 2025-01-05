@@ -25,25 +25,44 @@ class VehicleDisplayScreen extends StatelessWidget {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(vehicleName, style: const TextStyle(fontSize: 18)),
+              Text(vehicleName,
+                  style: const TextStyle(fontSize: 18, color: Colors.white)),
               Text(vehicleModel,
                   style: const TextStyle(fontSize: 14, color: Colors.grey)),
             ],
+          ),
+          backgroundColor:
+              Colors.transparent, // Make AppBar background transparent
+          elevation: 0, // Remove the shadow
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 150, 96, 146), // Example gradient color 1
+                  Color.fromARGB(255, 9, 33, 129), // Example gradient color 2
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
           ),
           bottom: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.local_gas_station), text: 'Refuels'),
               Tab(icon: Icon(Icons.monetization_on), text: 'Expenses'),
             ],
+            labelColor: Colors.white, // White text for the selected tab
+            unselectedLabelColor:
+                Colors.white70, // Lighter text for unselected tabs
           ),
         ),
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 0, 0, 0),
-                Color.fromARGB(255, 0, 0, 0)
-              ], // Example colors
+                Color.fromARGB(255, 0, 0, 0), // First gradient color
+                Color.fromARGB(255, 0, 0, 0), // Second gradient color
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -58,7 +77,6 @@ class VehicleDisplayScreen extends StatelessWidget {
                 vehicleId: vehicleId,
                 userId: userId,
               ),
-              // Pass userId here
             ],
           ),
         ),

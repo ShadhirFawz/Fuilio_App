@@ -36,8 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _deleteVehicle(String vehicleId) async {
-    await _vehicleService
-        .deleteVehicle(vehicleId); // Ensure this function is implemented
+    await _vehicleService.deleteVehicle(vehicleId);
     _loadVehicles();
   }
 
@@ -71,8 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('Delete'),
               onTap: () {
                 Navigator.pop(context); // Close the menu
-                _deleteVehicle(
-                    vehicle.vehicleId); // Trigger delete functionality
+                _deleteVehicle(vehicle.vehicleId);
               },
             ),
           ],
@@ -193,152 +191,126 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 100),
-              const Text(
-                'Your Vehicles',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontFamily: 'Mulish',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 100), // Adjusted spacing after AppBar
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  'Your Vehicles',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontFamily: 'Mulish',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: FutureBuilder<List<Vehicle>>(
-                  future: _vehiclesFuture,
-                  builder: (context, results) {
-                    if (results.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (results.hasError) {
-                      return Center(
-                        child: Text(
-                          'Error: ${results.error}',
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      );
-                    } else if (!results.hasData || results.data!.isEmpty) {
-                      return const Center(
-                        child: Text(
-                          'No vehicles added yet.',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    }
+            ),
+            const SizedBox(
+              height: 16,
+            ), // Minimal spacing between title and list
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(12), // Adjust corner radius as needed
+                child: Image.asset(
+                  'assets/images/home_img.png', // Replace with your image URL
+                  height: 200, // Adjust height as needed
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ), // Spacing after the image
+            Expanded(
+              child: FutureBuilder<List<Vehicle>>(
+                future: _vehiclesFuture,
+                builder: (context, results) {
+                  if (results.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (results.hasError) {
+                    return Center(
+                      child: Text(
+                        'Error: ${results.error}',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    );
+                  } else if (!results.hasData || results.data!.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'No vehicles added yet.',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }
 
-                    final vehicles = results.data!;
-                    return ListView.builder(
-                      itemCount: vehicles.length,
-                      itemBuilder: (context, index) {
-                        final vehicle = vehicles[index];
-                        return Card(
+                  final vehicles = results.data!;
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    itemCount: vehicles.length,
+                    itemBuilder: (context, index) {
+                      final vehicle = vehicles[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: Card(
                           elevation: 6,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Stack(
-                            children: [
-                              ListTile(
-                                title: Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .start, // Centers the contents horizontally
-                                  children: [
-                                    const Icon(
-                                      Icons.directions_car, // Car icon
-                                      color: Color.fromARGB(255, 175, 67,
-                                          17), // Adjust the color to fit your design
-                                      size: 40, // Adjust the icon size
-                                    ),
-                                    const SizedBox(
-                                        width:
-                                            20), // Space between icon and text
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          vehicle.name,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 24,
-                                              fontFamily: 'Rufina'),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          'Model: ${vehicle.model}',
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: 'Mulish',
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        const SizedBox(height: 3),
-                                        Text(
-                                          'Year: ${vehicle.manufactureYear}',
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: 'Noticia',
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        const SizedBox(height: 7),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          VehicleDisplayScreen(
-                                        vehicleId: vehicle.vehicleId,
-                                        vehicleName: vehicle.name,
-                                        vehicleModel: vehicle.model,
-                                        userId: widget.userId,
-                                      ),
-                                    ),
-                                  );
-                                },
+                          child: ListTile(
+                            leading: const Icon(
+                              Icons.directions_car,
+                              color: Color.fromARGB(255, 175, 67, 17),
+                              size: 40,
+                            ),
+                            title: Text(
+                              vehicle.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
                               ),
-                              Positioned(
-                                right: 8,
-                                top: 8,
-                                child: IconButton(
-                                  icon: const Icon(
-                                    Icons.more_vert,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () {
-                                    _showOptionsMenu(context, vehicle);
-                                  },
-                                ),
-                              ),
-                              Positioned(
-                                right: 16,
-                                bottom: 8,
-                                child: Text(
-                                  ' ${vehicle.vehicleDate.toLocal().toString().split(' ')[0]}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.black87,
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Model: ${vehicle.model}'),
+                                Text('Year: ${vehicle.manufactureYear}'),
+                              ],
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.more_vert),
+                              onPressed: () {
+                                _showOptionsMenu(context, vehicle);
+                              },
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VehicleDisplayScreen(
+                                    vehicleId: vehicle.vehicleId,
+                                    vehicleName: vehicle.name,
+                                    vehicleModel: vehicle.model,
+                                    userId: widget.userId,
                                   ),
                                 ),
-                              ),
-                            ],
+                              );
+                            },
                           ),
-                        );
-                      },
-                    );
-                  },
-                ),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
