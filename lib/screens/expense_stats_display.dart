@@ -116,7 +116,7 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
         children: [
           // Pie Chart and Legend
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -162,7 +162,7 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
     return PieChartSectionData(
       color: color,
       value: value,
-      radius: 30,
+      radius: 20,
       showTitle: false,
     );
   }
@@ -172,10 +172,10 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _LegendItem(color: Colors.blue, label: 'Tire Replacement'),
-        _LegendItem(color: Colors.orange, label: 'Oil Change'),
+        _LegendItem(color: Colors.blue, label: 'Tire'),
+        _LegendItem(color: Colors.orange, label: 'Oil'),
         _LegendItem(color: Colors.purple, label: 'Brake Pads'),
-        _LegendItem(color: Colors.green, label: 'Other Expenses'),
+        _LegendItem(color: Colors.green, label: 'Other'),
       ],
     );
   }
@@ -191,18 +191,18 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           child: Text(
             'Total Expense Breakdown',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               fontFamily: 'Source Sans',
               color: Colors.white,
             ),
           ),
         ),
-        const SizedBox(height: 7),
+        const SizedBox(height: 5),
 
         // Horizontal Bar with Expense Proportions
         Padding(
@@ -211,7 +211,7 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
             children: [
               // Horizontal Bar
               Container(
-                height: 15,
+                height: 12,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -231,22 +231,22 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildExpenseLabel(
-                      ' ${stats.totalTireReplacement.toStringAsFixed(2)}',
+                      ' ${stats.totalTireReplacement.toStringAsFixed(0)}',
                       Colors.blue),
                   _buildExpenseLabel(
-                      ' ${stats.totalOilChange.toStringAsFixed(2)}',
+                      ' ${stats.totalOilChange.toStringAsFixed(0)}',
                       Colors.orange),
                   _buildExpenseLabel(
-                      ' ${stats.totalBrakePads.toStringAsFixed(2)}',
+                      ' ${stats.totalBrakePads.toStringAsFixed(0)}',
                       Colors.purple),
                   _buildExpenseLabel(
-                      ' ${stats.totalOther.toStringAsFixed(2)}', Colors.green),
+                      ' ${stats.totalOther.toStringAsFixed(0)}', Colors.green),
                 ],
               ),
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 5),
       ],
     );
   }
@@ -293,7 +293,7 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
           const Text(
             'Cost ',
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               fontFamily: 'Noticia',
               color:
@@ -303,26 +303,42 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
 
           // Rectangle containing the expense value
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 25),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 25),
             decoration: BoxDecoration(
-              color: const Color.fromARGB(173, 99, 48, 6), // Background color
+              color:
+                  const Color.fromARGB(131, 177, 168, 160), // Background color
               borderRadius: BorderRadius.circular(30),
             ),
-            child: Text(
-              'Rs ${totalExpense.toStringAsFixed(2)}',
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Noticia',
-                color: Colors.white,
-              ),
+            child: Row(
+              mainAxisSize: MainAxisSize
+                  .min, // Ensure the row only takes as much space as necessary
+              children: [
+                const Icon(
+                  Icons
+                      .money, // You can use Icons.attach_money as well for a money symbol
+                  color: Colors.white,
+                  size: 20, // Icon size
+                ),
+                const SizedBox(
+                    width: 8), // Add some spacing between the icon and the text
+                Text(
+                  'Rs ${totalExpense.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Noticia',
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
 
           // Delete Forever Button with Rectangle Background Added
           Container(
             decoration: BoxDecoration(
-              color: Colors.red, // Red background for delete button
+              color: const Color.fromARGB(
+                  176, 244, 67, 54), // Red background for delete button
               borderRadius:
                   BorderRadius.circular(12), // Slightly rounded corners
             ),
@@ -351,9 +367,9 @@ class _LegendItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(width: 16, height: 16, color: color),
+        Container(width: 12, height: 16, color: color),
         const SizedBox(width: 10),
-        Text(label, style: const TextStyle(fontSize: 16)),
+        Text(label, style: const TextStyle(fontSize: 16, color: Colors.white)),
       ],
     );
   }

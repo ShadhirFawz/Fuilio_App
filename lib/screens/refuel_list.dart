@@ -96,7 +96,7 @@ class _RefuelListState extends State<RefuelList> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Refuel History'),
+          title: const Text('AFE History'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -143,7 +143,7 @@ class _RefuelListState extends State<RefuelList> {
             end: Alignment.bottomCenter,
             colors: [
               Color.fromRGBO(51, 48, 91, 1),
-              Color.fromARGB(255, 26, 76, 214),
+              Color.fromARGB(181, 77, 13, 149),
             ],
           ),
         ),
@@ -151,11 +151,11 @@ class _RefuelListState extends State<RefuelList> {
           child: Column(
             children: [
               const Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(12.0),
                 child: Text(
                   'Refuel Records',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 20,
                     fontFamily: 'Times New Roman',
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -169,7 +169,7 @@ class _RefuelListState extends State<RefuelList> {
                 builder: (context, results) {
                   if (results.connectionState == ConnectionState.waiting) {
                     return const Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(12.0),
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -198,13 +198,16 @@ class _RefuelListState extends State<RefuelList> {
                           : (averageFuelEconomy * 2.352);
 
                       return Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Column(
                           children: [
                             const Text(
                               'Average Fuel Economy',
-                              style:
-                                  TextStyle(fontSize: 22, color: Colors.white),
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.white,
+                                fontFamily: 'Mulish',
+                              ),
                             ),
                             const SizedBox(height: 16),
                             Row(
@@ -256,7 +259,7 @@ class _RefuelListState extends State<RefuelList> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text('Km/L',
+                                const Text('Km/L ',
                                     style: TextStyle(
                                         fontSize: 18, color: Colors.white)),
                                 Switch(
@@ -269,7 +272,7 @@ class _RefuelListState extends State<RefuelList> {
                                   activeColor: Colors.green,
                                   inactiveThumbColor: Colors.blue,
                                 ),
-                                const Text('M/G',
+                                const Text(' M/G',
                                     style: TextStyle(
                                         fontSize: 18, color: Colors.white)),
                               ],
@@ -315,164 +318,178 @@ class _RefuelListState extends State<RefuelList> {
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
-                        child: Card(
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Stack(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.local_gas_station,
-                                      color: Colors.blueAccent,
-                                      size: 36,
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: Colors.orangeAccent,
-                                            width: 4),
+                            horizontal: 16.0, vertical: 5.0),
+                        child: Opacity(
+                          opacity:
+                              0.9, // Adjust opacity value here, 0.0 for fully transparent, 1.0 for fully opaque
+                          child: Card(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.local_gas_station,
+                                        color: Colors.blueAccent,
+                                        size: 36,
                                       ),
-                                      child: Center(
-                                        child: Text(
-                                          '${refuel.fuelAdded.toInt()}L',
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.orangeAccent,
+                                      const SizedBox(width: 5),
+                                      Container(
+                                        width: 60,
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color: Colors.orangeAccent,
+                                              width: 4),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            '${refuel.fuelAdded.toInt()}L',
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.orangeAccent,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'R$reversedIndex',
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.deepPurple,
+                                      const SizedBox(width: 7),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'R$reversedIndex',
+                                            style: const TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.deepPurple,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          '${refuel.mileage} Km',
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black,
+                                          Text(
+                                            '${refuel.mileage} Km',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              // Positioned Options Icon and Date
-                              Positioned(
-                                top: 8,
-                                right: 8,
-                                child: PopupMenuButton<String>(
-                                  onSelected: (value) async {
-                                    if (value == 'delete') {
-                                      final confirm = await showDialog<bool>(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: const Text('Confirm Delete'),
-                                          content: const Text(
-                                              'Are you sure you want to delete this refuel record?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context)
-                                                      .pop(false),
-                                              child: const Text(
-                                                'Cancel',
-                                                style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 15,
-                                                  fontFamily: 'Times New Roman',
-                                                ),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context)
-                                                      .pop(true),
-                                              child: const Text(
-                                                'Delete',
-                                                style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 15,
-                                                  fontFamily: 'Times New Roman',
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-
-                                      if (confirm == true) {
-                                        try {
-                                          await _refuelService
-                                              .removeRefuel(refuel.refuelId);
-                                          setState(() {
-                                            _refuelsFuture = _refuelService
-                                                .getRefuels(widget.vehicleId);
-                                            _averageFuelEconomyFuture =
-                                                _refuelService
-                                                    .calculateAverageFuelEconomy(
-                                                        widget.vehicleId);
-                                          });
-                                        } catch (e) {
-                                          // ignore: use_build_context_synchronously
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                  'Failed to delete refuel: $e'),
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    }
-                                  },
-                                  itemBuilder: (context) => [
-                                    const PopupMenuItem<String>(
-                                      value: 'delete',
-                                      child: Text('Delete'),
-                                    ),
-                                  ],
-                                  icon: const Icon(
-                                    Icons.more_vert,
-                                    color: Colors.grey,
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                bottom: 8,
-                                right: 16,
-                                child: Text(
-                                  refuel.dateTime
-                                      .toLocal()
-                                      .toString()
-                                      .split(' ')[0],
-                                  style: const TextStyle(
-                                      fontSize: 14, color: Colors.black),
+
+                                // Positioned Options Icon and Date
+                                Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: PopupMenuButton<String>(
+                                    onSelected: (value) async {
+                                      if (value == 'delete') {
+                                        final confirm = await showDialog<bool>(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: const Text('Confirm Delete'),
+                                            content: const Text(
+                                                'Are you sure you want to delete this refuel record?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context)
+                                                        .pop(false),
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontSize: 15,
+                                                    fontFamily:
+                                                        'Times New Roman',
+                                                  ),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context)
+                                                        .pop(true),
+                                                child: const Text(
+                                                  'Delete',
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontSize: 15,
+                                                    fontFamily:
+                                                        'Times New Roman',
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+
+                                        if (confirm == true) {
+                                          try {
+                                            await _refuelService
+                                                .removeRefuel(refuel.refuelId);
+                                            setState(() {
+                                              _refuelsFuture = _refuelService
+                                                  .getRefuels(widget.vehicleId);
+                                              _averageFuelEconomyFuture =
+                                                  _refuelService
+                                                      .calculateAverageFuelEconomy(
+                                                          widget.vehicleId);
+                                            });
+                                          } catch (e) {
+                                            // ignore: use_build_context_synchronously
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                    'Failed to delete refuel: $e'),
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      }
+                                    },
+                                    itemBuilder: (context) => [
+                                      const PopupMenuItem<String>(
+                                        value: 'delete',
+                                        child: Text(
+                                          'Delete',
+                                          style: TextStyle(
+                                            fontFamily: 'Times New Roman',
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                    icon: const Icon(
+                                      Icons.more_vert,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                                Positioned(
+                                  bottom: 8,
+                                  right: 16,
+                                  child: Text(
+                                    refuel.dateTime
+                                        .toLocal()
+                                        .toString()
+                                        .split(' ')[0],
+                                    style: const TextStyle(
+                                        fontSize: 10,
+                                        color:
+                                            Color.fromARGB(255, 140, 122, 122)),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );

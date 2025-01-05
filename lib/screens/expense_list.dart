@@ -91,7 +91,7 @@ class _ExpenseListScreenState extends State<ExpenseList> {
           gradient: LinearGradient(
             colors: [
               Color.fromRGBO(51, 48, 91, 1),
-              Color.fromARGB(255, 26, 76, 214),
+              Color.fromARGB(181, 77, 13, 149),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -108,14 +108,14 @@ class _ExpenseListScreenState extends State<ExpenseList> {
                   child: Text(
                     'Expense Records',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 20,
                       fontFamily: 'Times New Roman',
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 2),
 
                 // FutureBuilder to load expenses and display stats + records
                 FutureBuilder<List<Expense>>(
@@ -162,7 +162,7 @@ class _ExpenseListScreenState extends State<ExpenseList> {
                                   title: Text(
                                     expense.type,
                                     style: const TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 15,
                                       fontFamily: 'Rufina',
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -171,7 +171,7 @@ class _ExpenseListScreenState extends State<ExpenseList> {
                                     'Amount: Rs ${expense.amount}',
                                     style: const TextStyle(
                                       fontSize: 14,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w500,
                                       fontFamily: 'Noticia',
                                     ),
                                   ),
@@ -180,7 +180,10 @@ class _ExpenseListScreenState extends State<ExpenseList> {
                                         .toLocal()
                                         .toString()
                                         .split(' ')[0],
-                                    style: const TextStyle(fontSize: 13),
+                                    style: const TextStyle(
+                                        fontSize: 13,
+                                        color:
+                                            Color.fromARGB(255, 140, 122, 122)),
                                   ),
                                 ),
                               ),

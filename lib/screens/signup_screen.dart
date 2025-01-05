@@ -26,6 +26,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     emailController.dispose();
     passwordController.dispose();
     nameController.dispose();
+    cityController.dispose();
+    phoneController.dispose();
   }
 
   // Method to handle user signup
@@ -120,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: "Enter your email",
                       icon: Icons.email,
                     ),
-                    // Password field
+                    // Password field with visibility toggle
                     TextFieldInputs(
                       textEditingController: passwordController,
                       hintText: "Enter your password",
@@ -143,7 +145,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     isLoading
                         ? const CircularProgressIndicator()
                         : ComButton(onTap: signUpUser, text: "Sign Up"),
-                    SizedBox(height: height / 15),
+                    // Reduce the spacing between the button and login text
+                    SizedBox(height: height * 0.02), // Adjusted space
                     // Login redirect
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -162,9 +165,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                           },
                           child: const Text(
-                            "  Log In",
+                            " Log In",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
+                                fontFamily: 'Times New Roman',
                                 fontSize: 16,
                                 color: Colors.deepPurple),
                           ),

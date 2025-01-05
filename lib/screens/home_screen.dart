@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.black,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 9),
                         ShaderMask(
                           shaderCallback: (Rect bounds) {
                             return const LinearGradient(
@@ -157,6 +157,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                 ),
+              ),
+              const SizedBox(
+                height: 10,
               ),
               ListTile(
                 leading: const Icon(Icons.edit),
@@ -187,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
             end: Alignment.bottomCenter,
             colors: [
               Color.fromRGBO(51, 48, 91, 1),
-              Color.fromARGB(255, 26, 76, 214),
+              Color.fromARGB(181, 77, 13, 149),
             ],
           ),
         ),
@@ -266,20 +269,27 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListTile(
                             leading: const Icon(
                               Icons.directions_car,
-                              color: Color.fromARGB(255, 175, 67, 17),
+                              color: Colors.brown,
                               size: 40,
                             ),
                             title: Text(
                               vehicle.name,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
+                                fontFamily: 'Rufina',
                                 fontSize: 18,
                               ),
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Model: ${vehicle.model}'),
+                                Text(
+                                  'Model: ${vehicle.model}',
+                                  style: const TextStyle(
+                                    fontFamily: 'Mulish',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                 Text('Year: ${vehicle.manufactureYear}'),
                               ],
                             ),

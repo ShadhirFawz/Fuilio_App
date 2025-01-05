@@ -82,7 +82,9 @@ class _SignUpScreenState extends State<LoginSignup> {
           Positioned.fill(
             child: Image.asset(
               'assets/images/onboard_placeholder.png', // Your background image path
-              fit: BoxFit.cover, // Cover the whole screen
+              fit: BoxFit.cover,
+              width: 200,
+              height: 200, // Cover the whole screen
             ),
           ),
           // Content Overlay
@@ -119,7 +121,14 @@ class _SignUpScreenState extends State<LoginSignup> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 70),
+                const SizedBox(height: 25),
+                const Text('Log In',
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Rufina',
+                        color: Colors.white)),
+                const SizedBox(height: 20),
                 TextFieldInputs(
                   icon: Icons.person,
                   textEditingController: emailController,
@@ -139,7 +148,8 @@ class _SignUpScreenState extends State<LoginSignup> {
                       "Forget Password?",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontFamily: 'Times New Roman',
+                        fontSize: 12,
                         color: Colors.blue,
                       ),
                     ),

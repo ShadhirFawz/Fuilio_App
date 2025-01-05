@@ -26,7 +26,8 @@ class VehicleDisplayScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(vehicleName,
-                  style: const TextStyle(fontSize: 18, color: Colors.white)),
+                  style: const TextStyle(
+                      fontSize: 18, color: Color.fromARGB(255, 0, 0, 0))),
               Text(vehicleModel,
                   style: const TextStyle(fontSize: 14, color: Colors.grey)),
             ],
@@ -38,11 +39,11 @@ class VehicleDisplayScreen extends StatelessWidget {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromARGB(255, 150, 96, 146), // Example gradient color 1
-                  Color.fromARGB(255, 9, 33, 129), // Example gradient color 2
+                  Color.fromARGB(206, 194, 40, 40),
+                  Color.fromARGB(206, 194, 40, 40), // Example gradient color 2
                 ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
               ),
             ),
           ),
@@ -51,9 +52,10 @@ class VehicleDisplayScreen extends StatelessWidget {
               Tab(icon: Icon(Icons.local_gas_station), text: 'Refuels'),
               Tab(icon: Icon(Icons.monetization_on), text: 'Expenses'),
             ],
-            labelColor: Colors.white, // White text for the selected tab
-            unselectedLabelColor:
-                Colors.white70, // Lighter text for unselected tabs
+            labelColor:
+                Color.fromARGB(255, 0, 0, 0), // White text for the selected tab
+            unselectedLabelColor: Color.fromARGB(
+                255, 115, 92, 115), // Lighter text for unselected tabs
           ),
         ),
         body: Container(
