@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 import '../models/refuel_model.dart';
 import '../services/refuel_service.dart';
@@ -106,6 +107,7 @@ class _AddRefuelScreenState extends State<AddRefuelScreen> {
         ),
         backgroundColor: Colors.transparent, // Transparent AppBar
         elevation: 0, // Remove shadow for seamless look
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: Container(
         decoration: const BoxDecoration(
