@@ -54,7 +54,7 @@ flutter pub get
 ```
 ---
 
-#Firebase Configuration
+## Firebase Configuration
 1. Create a Firebase project in the Firebase Console.
 2. Enable the required services:
 - Firestore Database
@@ -71,7 +71,7 @@ flutterfire configure
 ```
 ---
 
-#Running the Project
+## Running the Project
 Run on Emulator or Physical Device
 1. To build and run the app:
 ```bash
@@ -95,7 +95,7 @@ flutter build ios --release
 
 ---
 
-##Project Structure
+## Project Structure
 ```plaintext
 lib/
 ├── models/               # Data models
@@ -109,7 +109,7 @@ lib/
 
 ---
 
-Available Commands
+## Available Commands
 Lint the Code
 ```bash
 flutter analyze
@@ -128,7 +128,7 @@ flutter clean
 ```
 
 ---
-#Contributing
+## Contributing
 🚶 Contributions are welcome! To contribute:
 
 #Fork the repository.
