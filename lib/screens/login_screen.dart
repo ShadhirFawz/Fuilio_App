@@ -140,21 +140,6 @@ class _SignUpScreenState extends State<LoginSignup> {
                   hintText: 'Enter your password',
                   isPass: true,
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 35),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "Forget Password?",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Times New Roman',
-                        fontSize: 12,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ),
                 ComButton(onTap: logInUser, text: "Log In"),
                 SizedBox(height: height / 15),
                 Row(
