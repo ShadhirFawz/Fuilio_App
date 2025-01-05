@@ -102,8 +102,6 @@ lib/
 ├── services/             # Firebase and other services
 ├── screens/              # App screens/UI
 ├── widgets/              # Reusable components
-├── providers/            # State management
-├── utils/                # Utility functions and constants
 └── main.dart             # App entry point
 ```
 
