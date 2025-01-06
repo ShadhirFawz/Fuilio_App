@@ -6,11 +6,11 @@ This is a **Flutter Firebase Project** that integrates Flutter for the frontend 
 ### Screenshots
 
 <p align='center'>
-  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_123144.jpg" alt="Screenshot 1" width="150" />
-  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_162833.jpg" alt="Screenshot 2" width="150" />
-  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_123831.jpg" alt="Screenshot 3" width="150" />
-  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_162851.jpg" alt="Screenshot 4" width="150" />
-  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_164852.jpg" alt="Screenshot 5" width="150" />
+  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_123144.jpg" alt="Screenshot 1" width="200" />
+  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_162833.jpg" alt="Screenshot 2" width="200" />
+  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_123831.jpg" alt="Screenshot 3" width="200" />
+  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_162851.jpg" alt="Screenshot 4" width="200" />
+  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_164852.jpg" alt="Screenshot 5" width="200" />
 </p>
   
 ---
