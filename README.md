@@ -6,7 +6,7 @@ This is a **Flutter Firebase Project** that integrates Flutter for the frontend 
 # Flutter Firebase Project
 
 <p align='center'>
-  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_123144" alt="Screenshot 1" width="300" />
+  <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_123144.jpg" alt="Screenshot 1" width="300" />
   <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_162833.jpg" alt="Screenshot 2" width="300" />
   <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_123831.jpg" alt="Screenshot 3" width="300" />
   <img src="https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Screenshots/Screenshot_20250106_162851.jpg" alt="Screenshot 4" width="300" />
