@@ -3,6 +3,8 @@
 ## Overview
 This is a **Flutter Firebase Project** that integrates Flutter for the frontend and Firebase for backend services like authentication, Firestore, and cloud functions. The project is built to be scalable and provides essential configurations for seamless development and deployment.
 
+![Banner](https://github.com/ShadhirFawz/Fuilio_App/blob/master/assets/Banner.png)
+
 ### Screenshots
 
 <p align='center'>
