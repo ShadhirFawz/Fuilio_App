@@ -55,8 +55,8 @@ This is a **Flutter Firebase Project** that integrates Flutter for the frontend 
 
 #Clone the Repository
 ```bash
-git clone https://github.com/yourusername/flutter-firebase-project.git
-cd flutter-firebase-project
+git clone https://github.com/ShadhirFawz/Fuilio_App.git
+cd Fuilio_App
 ```
 
 #Install Dependencies
