@@ -87,6 +87,8 @@ class _ExpenseListScreenState extends State<ExpenseList> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -133,9 +135,32 @@ class _ExpenseListScreenState extends State<ExpenseList> {
                     }
 
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                        child: Text('No expense records.',
-                            style: TextStyle(color: Colors.white)),
+                      return Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context)
+                            .size
+                            .height, // Fill the screen height
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromRGBO(51, 48, 91, 1),
+                              Color.fromARGB(181, 77, 13, 149),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'No expense records.',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Times New Roman',
+                            ),
+                          ),
+                        ),
                       );
                     }
 

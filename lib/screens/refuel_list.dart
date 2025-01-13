@@ -8,8 +8,14 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 class RefuelList extends StatefulWidget {
   final String vehicleId;
   final String userId;
+  final String vehicleName;
 
-  const RefuelList({required this.vehicleId, required this.userId, super.key});
+  const RefuelList({
+    required this.vehicleId,
+    required this.userId,
+    super.key,
+    required this.vehicleName,
+  });
 
   @override
   State<RefuelList> createState() => _RefuelListState();
@@ -29,10 +35,16 @@ class _RefuelListState extends State<RefuelList> {
     super.initState();
     _refuelService =
         RefuelService(userId: widget.userId, vehicleId: widget.vehicleId);
-    _refuelsFuture = _refuelService.getRefuels(widget.vehicleId);
-    _averageFuelEconomyFuture =
-        _refuelService.calculateAverageFuelEconomy(widget.vehicleId);
     _loadHistory();
+    _refreshData();
+  }
+
+  void _refreshData() {
+    setState(() {
+      _refuelsFuture = _refuelService.getRefuels(widget.vehicleId);
+      _averageFuelEconomyFuture =
+          _refuelService.calculateAverageFuelEconomy(widget.vehicleId);
+    });
   }
 
   // Function to load history from SharedPreferences
@@ -82,12 +94,9 @@ class _RefuelListState extends State<RefuelList> {
         ),
       ),
     );
-    // Refresh the data after returning from AddRefuelScreen
-    setState(() {
-      _refuelsFuture = _refuelService.getRefuels(widget.vehicleId);
-      _averageFuelEconomyFuture =
-          _refuelService.calculateAverageFuelEconomy(widget.vehicleId);
-    });
+
+    // Refresh data and save the updated history
+    _refreshData();
   }
 
   // Show History Popup
@@ -137,6 +146,8 @@ class _RefuelListState extends State<RefuelList> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,

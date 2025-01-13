@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fuilio_app/screens/forgot_password.dart';
 import 'package:fuilio_app/screens/home_screen.dart';
 import 'package:fuilio_app/screens/signup_screen.dart';
 import 'package:fuilio_app/services/auth_service.dart';
@@ -141,6 +142,7 @@ class _SignUpScreenState extends State<LoginSignup> {
                   isPass: true,
                 ),
                 ComButton(onTap: logInUser, text: "Log In"),
+                const ForgotPassword(),
                 SizedBox(height: height / 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

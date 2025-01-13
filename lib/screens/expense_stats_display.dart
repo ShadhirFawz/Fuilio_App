@@ -94,72 +94,82 @@ class _ExpenseStatsDisplayState extends State<ExpenseStatsDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    final double totalExpense = stats.totalTireReplacement +
-        stats.totalOilChange +
-        stats.totalBrakePads +
-        stats.totalOther;
-
-    // Handle no expenses case
-    if (totalExpense == 0) {
-      return const Center(
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.transparent,
+            Colors.transparent,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.info, size: 80, color: Colors.grey),
-            SizedBox(height: 20),
-            Text(
-              'No Expenses',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+            if (stats.totalTireReplacement +
+                    stats.totalOilChange +
+                    stats.totalBrakePads +
+                    stats.totalOther ==
+                0) ...[
+              const Icon(Icons.info, size: 80, color: Colors.grey),
+              const SizedBox(height: 20),
+              const Text(
+                'No Expenses',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-            ),
+            ] else ...[
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 180,
+                      width: 180,
+                      child: PieChart(
+                        PieChartData(
+                          sections: [
+                            _buildPieChartSection('Tire Replacement',
+                                stats.totalTireReplacement, Colors.blue),
+                            _buildPieChartSection('Oil Change',
+                                stats.totalOilChange, Colors.orange),
+                            _buildPieChartSection('Brake Pads',
+                                stats.totalBrakePads, Colors.purple),
+                            _buildPieChartSection('Other Expenses',
+                                stats.totalOther, Colors.green),
+                          ],
+                          centerSpaceRadius: 70,
+                          sectionsSpace: 2,
+                          borderData: FlBorderData(show: false),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 25),
+                    _buildLegend(),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              _buildTotalBar(stats.totalTireReplacement +
+                  stats.totalOilChange +
+                  stats.totalBrakePads +
+                  stats.totalOther),
+              const SizedBox(height: 20),
+              _buildTotalExpenseRectangle(stats.totalTireReplacement +
+                  stats.totalOilChange +
+                  stats.totalBrakePads +
+                  stats.totalOther),
+            ],
           ],
         ),
-      );
-    }
-
-    final List<PieChartSectionData> sections = [
-      _buildPieChartSection(
-          'Tire Replacement', stats.totalTireReplacement, Colors.blue),
-      _buildPieChartSection('Oil Change', stats.totalOilChange, Colors.orange),
-      _buildPieChartSection('Brake Pads', stats.totalBrakePads, Colors.purple),
-      _buildPieChartSection('Other Expenses', stats.totalOther, Colors.green),
-    ];
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 180,
-                  width: 180,
-                  child: PieChart(
-                    PieChartData(
-                      sections: sections,
-                      centerSpaceRadius: 70,
-                      sectionsSpace: 2,
-                      borderData: FlBorderData(show: false),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 25),
-                _buildLegend(),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10),
-          _buildTotalBar(totalExpense),
-          const SizedBox(height: 20),
-          _buildTotalExpenseRectangle(totalExpense),
-        ],
       ),
     );
   }

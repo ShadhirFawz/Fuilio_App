@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fuilio_app/screens/edit_profile_screen.dart';
 import 'package:fuilio_app/screens/login_screen.dart';
+import 'package:fuilio_app/screens/notification_list_screen.dart';
 import '../models/vehicle_model.dart';
+import 'package:badges/badges.dart' as custom_badge;
 import '../services/auth_service.dart';
 import '../services/vehicle_service.dart';
 import 'add_vehicle_screen.dart';
@@ -27,11 +30,41 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _vehicleService = VehicleService(userId: widget.userId);
     _loadVehicles();
+    _fetchUnreadNotifications();
   }
 
   void _loadVehicles() {
     setState(() {
       _vehiclesFuture = _vehicleService.getVehicles();
+    });
+  }
+
+  int _unreadNotificationCount = 0;
+
+  void _fetchUnreadNotifications() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .collection('vehicles')
+        .get();
+
+    int unreadCount = 0;
+
+    for (var vehicle in snapshot.docs) {
+      final notificationsSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.userId)
+          .collection('vehicles')
+          .doc(vehicle.id)
+          .collection('notifications')
+          .where('read', isEqualTo: false)
+          .get();
+
+      unreadCount += notificationsSnapshot.docs.length;
+    }
+
+    setState(() {
+      _unreadNotificationCount = unreadCount;
     });
   }
 
@@ -86,8 +119,35 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: custom_badge.Badge(
+              badgeContent: Text(
+                _unreadNotificationCount.toString(),
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+              ),
+              showBadge: _unreadNotificationCount > 0,
+              child: const Icon(
+                Icons.notifications,
+                size: 30,
+                color: Colors.black,
+              ),
+            ),
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      NotificationListScreen(userId: widget.userId),
+                ),
+              );
+              _fetchUnreadNotifications(); // Refresh count after returning from notification screen
+            },
+          ),
+        ],
       ),
       drawer: Drawer(
+        elevation: 16, // Added elevation for the drawer
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -158,9 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               ListTile(
                 leading: const Icon(Icons.edit),
                 title: const Text('Edit Profile'),
@@ -213,13 +271,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(
-              height: 16,
-            ), // Minimal spacing between title and list
+                height: 16), // Minimal spacing between title and list
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(12), // Adjust corner radius as needed
+                borderRadius: BorderRadius.circular(12), // Adjust corner radius
                 child: Image.asset(
                   'assets/images/home_img.png', // Replace with your image URL
                   height: 200, // Adjust height as needed
@@ -228,9 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 16,
-            ), // Spacing after the image
+            const SizedBox(height: 16), // Spacing after the image
             Expanded(
               child: FutureBuilder<List<Vehicle>>(
                 future: _vehiclesFuture,
